@@ -4,6 +4,7 @@ import java.io.*;
 public class AuthenticationServer {
 	public static void main(String[] args)
 	{
+		/*
 		try
 		{
 			// apertura del socket server
@@ -30,6 +31,21 @@ public class AuthenticationServer {
 				client.close();
 			}
 			
+		}
+		*/
+		try
+		{
+			ServerSocket server = new ServerSocket(12345);
+
+			// ciclo infinito, in attesa di connessioni
+			while(true)
+			{
+				// chiamata bloccante, in attesa di una nuova connessione
+				Socket client = server.accept();
+
+				// la nuova richiesta viene gestita da un thread indipendente, si ripete il ciclo
+				Connection nuovaConnessione = new Connection(client);
+			}
 		}
 		catch (Exception e)
 		{
