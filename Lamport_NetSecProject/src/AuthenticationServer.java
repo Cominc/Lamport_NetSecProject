@@ -15,7 +15,7 @@ public class AuthenticationServer {
 				Socket client = server.accept();
 
 				// la nuova richiesta viene gestita da un thread indipendente, si ripete il ciclo
-				Connection nuovaConnessione = new Connection(client);
+				Connection newConnection = new Connection(client);
 			}
 		}
 		catch (Exception e)

@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 
-public class Client {
+public class Client implements Serializable{
 	private String name;
 	private String password;
 	
@@ -30,17 +30,19 @@ public class Client {
 	{
 		try
 		{
-			// preparazione dell'indirizzo del server
+			//Creazione socket 
 			InetAddress address = InetAddress.getByName("localhost");
 			int port = 12345;
-			// creazione socket
 			Socket client = new Socket(address, port);
 			
 			System.out.println("Client ready.\n");
 			
+			//SCAMBIO DI MESSAGGI SOLO STRINGHE *****************************************************************
+			/*
 			// creazione buffer di scrittura
 			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-	
+			*/
+			//------------------------------------------------------------------------------------
 			/*
 			 * istruzione commentata riceve testo da inviare come argomento
 			 *
@@ -49,6 +51,8 @@ public class Client {
 			// scrittura del messaggio (passato come parametro) nel buffer in uscita
 			out.println(args[0]);
 			*/
+			//------------------------------------------------------------------------------------
+			/*
 			String messaggio = "Hello server, i'm the client 2";
 			System.out.println("Buffer ready, sending message \""+messaggio+"\"...\n");
 			
@@ -59,6 +63,23 @@ public class Client {
 			
 			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			System.out.println("<< "+client.getInetAddress()+": "+in.readLine()+"\n");
+			*/
+			//***************************************************************************************************
+
+			//SCAMBIO DI MESSAGGI SOLO OGGETTI-------------------------------------------------------------------
+			ObjectOutputStream outObj = new ObjectOutputStream(client.getOutputStream());
+			ObjectInputStream inObj = new ObjectInputStream(client.getInputStream());
+			
+			System.out.println(">> dani, aaab");
+			outObj.writeObject(new Client("dani","aaab"));
+			
+			
+			System.out.println("available: "+inObj.available());
+			Client obj = (Client)inObj.readObject();
+			System.out.println("<< "+obj.getName()+", "+obj.getPassword());
+			
+			
+			//---------------------------------------------------------------------------------------------------
 			
 			// chiusura socket
 			client.close();
