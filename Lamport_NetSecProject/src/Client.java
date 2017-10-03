@@ -28,21 +28,13 @@ public class Client {
 	
 	public static void main(String[] args)
 	{
-		/*
-		// verifica correttezza dei parametri
-		if (args.length != 1)
-		{
-			System.out.println("Usage: java myclient \"message to send\"");
-			return;
-		}
-		*/
 		try
 		{
 			// preparazione dell'indirizzo del server
 			InetAddress address = InetAddress.getByName("localhost");
-			
+			int port = 12345;
 			// creazione socket
-			Socket client = new Socket(address, 12345);
+			Socket client = new Socket(address, port);
 			
 			System.out.println("Client ready.\n");
 			
@@ -57,13 +49,16 @@ public class Client {
 			// scrittura del messaggio (passato come parametro) nel buffer in uscita
 			out.println(args[0]);
 			*/
-			String messaggio = "Hello server, i'm the client";
+			String messaggio = "Hello server, i'm the client 2";
 			System.out.println("Buffer ready, sending message \""+messaggio+"\"...\n");
 			
 			// scrittura del messaggio (passato come parametro) nel buffer in uscita
 			out.println(messaggio);
 			
 			System.out.println("Message sent.\n");
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			System.out.println("<< "+client.getInetAddress()+": "+in.readLine()+"\n");
 			
 			// chiusura socket
 			client.close();

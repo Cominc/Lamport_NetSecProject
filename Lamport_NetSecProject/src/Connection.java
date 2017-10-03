@@ -33,8 +33,11 @@ class Connection extends Thread
 
 			// eventuali elaborazioni e scambi di informazioni con il client
 
-			// ...
-
+			System.out.println(">> "+client.getInetAddress()+": "+in.readLine()+"\n");
+			
+			System.out.println("<< Ciao client");
+			out.write("<< Ciao client");
+			out.flush();
 			// chiusura dei buffer e del socket
 			in.close();
  			out.close();
