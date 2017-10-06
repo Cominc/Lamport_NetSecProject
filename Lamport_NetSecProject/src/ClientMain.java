@@ -5,15 +5,20 @@ import java.net.Socket;
 
 
 public class ClientMain {
-
+	final static String AS_ADDRESS = "localhost";
+	final static int PORT = 31;
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		Client client = new Client("Alice","alice_pwd");
+		//Client client = new Client("Bob","bob_pwd");
+		//Trudy cerca di autenticarsi come Alice ma non ne conosce la password
+		//Client client = new Client("Alice","trudy_pwd");
 		try
 		{
 			//Creazione socket 
-			InetAddress address = InetAddress.getByName("localhost");
-			int port = 12345;
-			Socket client = new Socket(address, port);
+			InetAddress address = InetAddress.getByName(AS_ADDRESS);
+			Socket clientSocket = new Socket(address, PORT);
 			
 			System.out.println("Client ready.\n");
 			
@@ -47,11 +52,11 @@ public class ClientMain {
 			//***************************************************************************************************
 
 			//SCAMBIO DI MESSAGGI SOLO OGGETTI-------------------------------------------------------------------
-			ObjectOutputStream outObj = new ObjectOutputStream(client.getOutputStream());
-			ObjectInputStream inObj = new ObjectInputStream(client.getInputStream());
+			ObjectOutputStream outObj = new ObjectOutputStream(clientSocket.getOutputStream());
+			ObjectInputStream inObj = new ObjectInputStream(clientSocket.getInputStream());
 			
-			System.out.println(">> dani, aaab");
-			outObj.writeObject(new Client("dani","aaab"));
+			System.out.println(">> "+client.getName()+", "+client.getPassword());
+			outObj.writeObject(client);
 			
 			
 			System.out.println("available: "+inObj.available());
@@ -62,7 +67,7 @@ public class ClientMain {
 			//---------------------------------------------------------------------------------------------------
 			
 			// chiusura socket
-			client.close();
+			clientSocket.close();
 		}
 		catch (Exception e)
 		{

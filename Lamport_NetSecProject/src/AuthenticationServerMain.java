@@ -3,12 +3,13 @@ import java.net.Socket;
 
 
 public class AuthenticationServerMain {
+	final static int PORT = 31;
+	
 	public static void main(String[] args)
 	{
 		try
 		{
-			int port = 12345;
-			ServerSocket server = new ServerSocket(port);
+			ServerSocket server = new ServerSocket(PORT);
 
 			// ciclo infinito, in attesa di connessioni
 			while(true)
@@ -17,7 +18,8 @@ public class AuthenticationServerMain {
 				Socket client = server.accept();
 
 				// la nuova richiesta viene gestita da un thread indipendente, si ripete il ciclo
-				Connection newConnection = new Connection(client);
+				//TODO mi può servire? Connection newConnection = new Connection(client) 
+				new Connection(client);
 			}
 		}
 		catch (Exception e)
