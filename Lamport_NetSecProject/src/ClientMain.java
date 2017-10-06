@@ -1,5 +1,8 @@
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -7,6 +10,8 @@ import java.net.Socket;
 public class ClientMain {
 	private final static String AS_ADDRESS = "localhost";
 	private final static int PORT = 31;
+	
+	private final static String CLIENT_START = "Client ready.\n";
 	
 	public static void main(String[] args) {
 		
@@ -20,38 +25,22 @@ public class ClientMain {
 			InetAddress address = InetAddress.getByName(AS_ADDRESS);
 			Socket clientSocket = new Socket(address, PORT);
 			
-			System.out.println("Client ready.\n");
+			System.out.println(CLIENT_START);
 			
-			//SCAMBIO DI MESSAGGI SOLO STRINGHE *****************************************************************
-			/*
-			// creazione buffer di scrittura
-			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-			*/
-			//------------------------------------------------------------------------------------
-			/*
-			 * istruzione commentata riceve testo da inviare come argomento
-			 *
-			System.out.println("Buffer ready, sending message \""+args[0]+"\"...\n");
+			// creazione buffer di scrittura e lettura
+			PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())), true);
+			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			
-			// scrittura del messaggio (passato come parametro) nel buffer in uscita
-			out.println(args[0]);
-			*/
-			//------------------------------------------------------------------------------------
-			/*
-			String messaggio = "Hello server, i'm the client 2";
-			System.out.println("Buffer ready, sending message \""+messaggio+"\"...\n");
+			// scrittura del messaggio nel buffer in uscita
+			out.println(client.getName());
 			
-			// scrittura del messaggio (passato come parametro) nel buffer in uscita
-			out.println(messaggio);
+			String serverResponse = in.readLine();
+			System.out.println("<< "+clientSocket.getInetAddress()+": "+serverResponse+"\n");
 			
-			System.out.println("Message sent.\n");
-			
-			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-			System.out.println("<< "+client.getInetAddress()+": "+in.readLine()+"\n");
-			*/
 			//***************************************************************************************************
 
 			//SCAMBIO DI MESSAGGI SOLO OGGETTI-------------------------------------------------------------------
+			/*
 			ObjectOutputStream outObj = new ObjectOutputStream(clientSocket.getOutputStream());
 			ObjectInputStream inObj = new ObjectInputStream(clientSocket.getInputStream());
 			
@@ -62,8 +51,7 @@ public class ClientMain {
 			System.out.println("available: "+inObj.available());
 			Client obj = (Client)inObj.readObject();
 			System.out.println("<< "+obj.getName()+", "+obj.getPassword());
-			
-			
+			*/
 			//---------------------------------------------------------------------------------------------------
 			
 			// chiusura socket

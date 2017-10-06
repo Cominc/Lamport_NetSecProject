@@ -1,5 +1,6 @@
 
 public class Entry {
+	//TODO Decidere se mantenere salt
 	private int n;
 	private String salt;
 	private String hash_n;

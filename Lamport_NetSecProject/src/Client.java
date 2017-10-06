@@ -2,8 +2,6 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import javax.xml.bind.DatatypeConverter;
-
 public class Client implements Serializable{
 	private static final String HASH_ALG_CHOOSED = "SHA-512";
 	
@@ -41,7 +39,8 @@ public class Client implements Serializable{
 			byte[] array = (password+salt).getBytes();
 			for(int i=0; i< n; i++)
 				array = md.digest(array); 
-			hashN = DatatypeConverter.printHexBinary(array);
+			hashN = new String(array);
+			//hashN = new String(DatatypeConverter.printHexBinary(array));
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
