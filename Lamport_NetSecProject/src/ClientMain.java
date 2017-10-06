@@ -5,8 +5,8 @@ import java.net.Socket;
 
 
 public class ClientMain {
-	final static String AS_ADDRESS = "localhost";
-	final static int PORT = 31;
+	private final static String AS_ADDRESS = "localhost";
+	private final static int PORT = 31;
 	
 	public static void main(String[] args) {
 		
