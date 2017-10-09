@@ -1,27 +1,35 @@
 import java.io.BufferedReader;
-//import java.io.BufferedWriter;
-//import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-//import java.io.OutputStreamWriter;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.concurrent.RecursiveTask;
 
 class Connection extends Thread
 {
+	private final static String SEPARATOR = ":";
+	
+	private final static String NEW_LINE = "\n";
+	private final static String SEND_LABEL = "send:   ";
+	private final static String RECIVE_LABEL = "recive: ";
+	
 	// dichiarazione delle variabili socket e dei buffer
 	Socket client;
 	
 	BufferedReader in;
 	PrintWriter out;
 	
+	HashMap<String, Entry> clients;
+	/*
 	ObjectOutputStream outObj;
 	ObjectInputStream inObj;
-
-	public Connection(Socket client)
+	 */
+	public Connection(Socket client,HashMap<String, Entry> clients)
 	{
 		this.client = client;
-
+		this.clients = clients;
 		// invoca automaticamente il metodo run()
 		this.start();
 	}
@@ -31,7 +39,7 @@ class Connection extends Thread
 		try
 		{
 			System.out.println("Sto servendo il client che ha indirizzo "+client.getInetAddress());
-			/*
+			
 			// inizializza i buffer in entrata e uscita per stringhe
 			
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -39,16 +47,24 @@ class Connection extends Thread
 			
 
 			// eventuali elaborazioni e scambi di informazioni con il client
-
-			System.out.println(">> "+client.getInetAddress()+": "+in.readLine()+"\n");
+			String first_mex_recived = in.readLine();
+			System.out.println(RECIVE_LABEL+first_mex_recived+NEW_LINE);
 			
-			System.out.println("<< Ciao client");
-			out.println("<< Ciao client");
-			//out.flush();
+			Entry clientToServeData = clients.get(first_mex_recived);
+			if(clientToServeData!=null){
+				String firstMexSend= clientToServeData.getN()+SEPARATOR+clientToServeData.getSalt();
+				System.out.println(SEND_LABEL+firstMexSend+NEW_LINE);
+				out.println(firstMexSend);
+				//out.flush();
+			}
 			// chiusura dei buffer e del socket
 			in.close();
  			out.close();
- 			*/
+ 			
+			
+			
+			/*
+			//SCAMBIO DI MESSAGGI SOLO OGGETTI
 			outObj = new ObjectOutputStream(client.getOutputStream());
 			inObj = new ObjectInputStream(client.getInputStream());
 			
@@ -57,6 +73,7 @@ class Connection extends Thread
 			Client objSend = new Client("Server","pwd");
 			System.out.println("<< "+objSend.getName()+", "+objSend.getPassword()+"\n");
 			outObj.writeObject(objSend);
+			*/
  			client.close();
 		}
 		catch(Exception e)

@@ -10,7 +10,8 @@ public class AuthenticationServerMain {
 	{
 		HashMap<String, Entry> clients = new HashMap<>();
 		//TODO Decidere se mantenere salt
-		Entry alice_data = new Entry(5, "E1F53135E559C253", "65B680C59D673A5851F7A4CC6B973FD2FE314505685675D6A3FB36CFC0C4D4CFFC8609E4647BB54A9A2730D78F81BF905CFF7584EED62E92F326C988A5A40742");
+		//Ho dovuto inserire un escape
+		Entry alice_data = new Entry(5, "E1F53135E559C253", "e¶€Å?g:XQ÷¤Ìk—?Òþ1EhVuÖ£û6ÏÀÄÔÏü†	äd{µJš'0×??¿?\\ÿu„îÖ.’ó&Éˆ¥¤B");
 		clients.put("Alice", alice_data);
 		try
 		{
@@ -24,7 +25,8 @@ public class AuthenticationServerMain {
 
 				// la nuova richiesta viene gestita da un thread indipendente, si ripete il ciclo
 				//TODO mi può servire? Connection newConnection = new Connection(client) 
-				new Connection(client);
+				//TODO controllare come si accede a clients (deve essere accesso unico, qualunque modifica deve essere vista da tutti)
+				new Connection(client,clients);
 			}
 		}
 		catch (Exception e)
