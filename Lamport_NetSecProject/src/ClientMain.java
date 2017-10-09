@@ -20,7 +20,7 @@ public class ClientMain {
 	
 	public static void main(String[] args) {
 		
-		Client client = new Client("Alice","alice_pwd");
+		Client client = new Client("Alice2","alice_pwd");
 		//Client client = new Client("Bob","bob_pwd");
 		//Trudy cerca di autenticarsi come Alice ma non ne conosce la password
 		//Client client = new Client("Alice","trudy_pwd");
@@ -60,6 +60,7 @@ public class ClientMain {
 				System.out.println(RECIVE_LABEL+serverResponse+NEW_LINE);
 				
 			}else {
+				//TODO stampa forse da rimuovere
 				System.out.println("No separator found.");
 			}
 			

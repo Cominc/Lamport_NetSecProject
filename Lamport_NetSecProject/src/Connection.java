@@ -21,6 +21,7 @@ class Connection extends Thread
 	private final static String MEX_CLIENT_NOT_FOUND = "Unknown Client.";
 	private final static String MEX_AUTH_FAIL = "Authentication fail.";
 	private final static String MEX_AUTH_OK = "Authentication Success.";
+	private final static String MEX_NEW_SETUP_NEEDED = "Maximum number of authentication reached, you need a new setup.";
 	
 	// dichiarazione delle variabili socket e dei buffer
 	Socket client;
@@ -51,7 +52,6 @@ class Connection extends Thread
 			
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-			
 
 			// eventuali elaborazioni e scambi di informazioni con il client
 			String first_mex_recived = in.readLine();
@@ -60,35 +60,40 @@ class Connection extends Thread
 			Entry clientToServeData = clients.get(first_mex_recived);
 			String firstMexSend;
 			if(clientToServeData!=null){
-				firstMexSend= clientToServeData.getN()+SEPARATOR+clientToServeData.getSalt();
-				System.out.println(SEND_LABEL+firstMexSend+NEW_LINE);
-				out.println(firstMexSend);
-				
-				String second_mex_recived = in.readLine();
-				System.out.println(RECIVE_LABEL+second_mex_recived+NEW_LINE);
-				
-				MessageDigest md;
-				String hashN ="";
-
-				try {
-					md = MessageDigest.getInstance(HASH_ALG_CHOOSED);
-					byte[] array = md.digest(Base64.getDecoder().decode(second_mex_recived)); 
-					hashN = Base64.getEncoder().encodeToString(array);
-				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				if(clientToServeData.getHash_n().equals(hashN)) {
-					clientToServeData.setN(clientToServeData.getN()-1);
-					clientToServeData.setHash_n(second_mex_recived);
-					clients.replace(first_mex_recived, clientToServeData);
-					
-					System.out.println(SEND_LABEL+MEX_AUTH_OK+NEW_LINE);
-					out.println(MEX_AUTH_OK);
+				if(clientToServeData.getN()<2) {
+					System.out.println(SEND_LABEL+MEX_NEW_SETUP_NEEDED+NEW_LINE);
+					out.println(MEX_NEW_SETUP_NEEDED);
 				}else {
-					System.out.println(SEND_LABEL+MEX_AUTH_FAIL+NEW_LINE);
-					out.println(MEX_AUTH_FAIL);
+					firstMexSend= clientToServeData.getN()+SEPARATOR+clientToServeData.getSalt();
+					System.out.println(SEND_LABEL+firstMexSend+NEW_LINE);
+					out.println(firstMexSend);
+					
+					String second_mex_recived = in.readLine();
+					System.out.println(RECIVE_LABEL+second_mex_recived+NEW_LINE);
+					
+					MessageDigest md;
+					String hashN = "";
+	
+					try {
+						md = MessageDigest.getInstance(HASH_ALG_CHOOSED);
+						byte[] array = md.digest(Base64.getDecoder().decode(second_mex_recived)); 
+						hashN = Base64.getEncoder().encodeToString(array);
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					if(clientToServeData.getHash_n().equals(hashN)) {
+						clientToServeData.setN(clientToServeData.getN()-1);
+						clientToServeData.setHash_n(second_mex_recived);
+						clients.replace(first_mex_recived, clientToServeData);
+						
+						System.out.println(SEND_LABEL+MEX_AUTH_OK+NEW_LINE);
+						out.println(MEX_AUTH_OK);
+					}else {
+						System.out.println(SEND_LABEL+MEX_AUTH_FAIL+NEW_LINE);
+						out.println(MEX_AUTH_FAIL);
+					}
 				}
 			}else {
 				System.out.println(SEND_LABEL+MEX_CLIENT_NOT_FOUND+NEW_LINE);
