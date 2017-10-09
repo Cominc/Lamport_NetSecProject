@@ -9,16 +9,15 @@ public class AuthenticationServerMain {
 	public static void main(String[] args)
 	{
 		HashMap<String, Entry> clients = new HashMap<>();
-		//TODO Decidere se mantenere salt
-		//Ho dovuto inserire un escape
-		Entry alice_data = new Entry(1, "E1F53135E559C253", "IslEV3D1VwUnYAs/6JqlVYK7DDdzhV7b5F1VQ6Y1HJRdxVGcYIGC39ijD00myEIZMInTGTKIwExG/MvZ1Ry5yg==");
+		Entry alice_data = new Entry(2, "E1F53135E559C253", "wR+EoB2aPC35/KQxJpN1rSh4nPE44Kzp5af6FjOgBvoNc+S3h7LYCphJvEJ689tCjr9PKPjDYmFzcp5WbKTeKQ==");
 		clients.put("Alice", alice_data);
 		try
 		{
 			ServerSocket server = new ServerSocket(PORT);
 			System.out.println("Authentication Server ready");
 			// ciclo infinito, in attesa di connessioni
-			while(true)
+			boolean ctrl = true;
+			while(ctrl)
 			{
 				// chiamata bloccante, in attesa di una nuova connessione
 				Socket client = server.accept();
@@ -28,6 +27,7 @@ public class AuthenticationServerMain {
 				//TODO controllare come si accede a clients (deve essere accesso unico, qualunque modifica deve essere vista da tutti)
 				new Connection(client,clients);
 			}
+			server.close();
 		}
 		catch (Exception e)
 		{

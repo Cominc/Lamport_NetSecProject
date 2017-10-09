@@ -62,21 +62,6 @@ public class ClientMain {
 			}else {
 				System.out.println("No separator found.");
 			}
-
-			//SCAMBIO DI MESSAGGI SOLO OGGETTI-------------------------------------------------------------------
-			/*
-			ObjectOutputStream outObj = new ObjectOutputStream(clientSocket.getOutputStream());
-			ObjectInputStream inObj = new ObjectInputStream(clientSocket.getInputStream());
-			
-			System.out.println(">> "+client.getName()+", "+client.getPassword());
-			outObj.writeObject(client);
-			
-			
-			System.out.println("available: "+inObj.available());
-			Client obj = (Client)inObj.readObject();
-			System.out.println("<< "+obj.getName()+", "+obj.getPassword());
-			*/
-			//---------------------------------------------------------------------------------------------------
 			
 			// chiusura socket
 			clientSocket.close();

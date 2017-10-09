@@ -9,8 +9,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.HashMap;
 
-import javax.xml.bind.DatatypeConverter;
-
 class Connection extends Thread
 {
 	private static final String HASH_ALG_CHOOSED = "SHA-512";
@@ -71,21 +69,17 @@ class Connection extends Thread
 				
 				MessageDigest md;
 				String hashN ="";
+
 				try {
 					md = MessageDigest.getInstance(HASH_ALG_CHOOSED);
-					byte[] array = md.digest(second_mex_recived.getBytes());
-					array = md.digest(array); 
-					//hashN = new String(array);
-					hashN = new String(Base64.getDecoder().decode(DatatypeConverter.printBase64Binary(array)));
+					byte[] array = md.digest(Base64.getDecoder().decode(second_mex_recived)); 
+					hashN = Base64.getEncoder().encodeToString(array);
 				} catch (NoSuchAlgorithmException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
-				System.out.println(clientToServeData.getHash_n());
-				System.out.println(hashN);
-				
-				if(clientToServeData.getHash_n()==hashN) {
+				if(clientToServeData.getHash_n().equals(hashN)) {
 					clientToServeData.setN(clientToServeData.getN()-1);
 					clientToServeData.setHash_n(second_mex_recived);
 					clients.replace(first_mex_recived, clientToServeData);
@@ -106,19 +100,6 @@ class Connection extends Thread
 			in.close();
  			out.close();
  			
-			
-			
-			/*
-			//SCAMBIO DI MESSAGGI SOLO OGGETTI
-			outObj = new ObjectOutputStream(client.getOutputStream());
-			inObj = new ObjectInputStream(client.getInputStream());
-			
-			Client objRecived = (Client)inObj.readObject();
-			System.out.println(">> "+objRecived.getName()+", "+objRecived.getPassword()+"\n");
-			Client objSend = new Client("Server","pwd");
-			System.out.println("<< "+objSend.getName()+", "+objSend.getPassword()+"\n");
-			outObj.writeObject(objSend);
-			*/
  			client.close();
 		}
 		catch(Exception e)
