@@ -1,6 +1,9 @@
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
+import javax.xml.bind.DatatypeConverter;
 
 public class Client implements Serializable{
 	private static final String HASH_ALG_CHOOSED = "SHA-512";
@@ -40,7 +43,7 @@ public class Client implements Serializable{
 			for(int i=0; i< n; i++)
 				array = md.digest(array); 
 			hashN = new String(array);
-			//hashN = new String(DatatypeConverter.printHexBinary(array));
+			//hashN = new String(Base64.getDecoder().decode(DatatypeConverter.printBase64Binary(array)));
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

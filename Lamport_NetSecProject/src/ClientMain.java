@@ -48,18 +48,21 @@ public class ClientMain {
 			if(serverResponse.contains(SEPARATOR)){
 				String salt = serverResponse.substring(serverResponse.indexOf(SEPARATOR)+1);
 				int n = Integer.parseInt(serverResponse.substring(0,serverResponse.indexOf(SEPARATOR)));
-				System.out.println(salt);
-				System.out.println(n);
+
+				String hash = client.computeHashN(n-1, salt);
+				
+				// Invio messaggio con la risposta al server
+				out.println(hash);
+				System.out.println(SEND_LABEL+hash+NEW_LINE);
+				
+				//Esito autenticazione
+				serverResponse = in.readLine();
+				System.out.println(RECIVE_LABEL+serverResponse+NEW_LINE);
+				
 			}else {
 				System.out.println("No separator found.");
 			}
-			/*
-			String hash = client.computeHashN(n-1, salt);
-			
-			// Invio messaggio con la risposta al server
-			out.println(hash);
-			System.out.println(SEND_LABEL+hash+NEW_LINE);
-			*/
+
 			//SCAMBIO DI MESSAGGI SOLO OGGETTI-------------------------------------------------------------------
 			/*
 			ObjectOutputStream outObj = new ObjectOutputStream(clientSocket.getOutputStream());

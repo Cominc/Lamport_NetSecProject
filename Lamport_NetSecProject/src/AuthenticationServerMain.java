@@ -11,12 +11,12 @@ public class AuthenticationServerMain {
 		HashMap<String, Entry> clients = new HashMap<>();
 		//TODO Decidere se mantenere salt
 		//Ho dovuto inserire un escape
-		Entry alice_data = new Entry(5, "E1F53135E559C253", "e¶€Å?g:XQ÷¤Ìk—?Òþ1EhVuÖ£û6ÏÀÄÔÏü†	äd{µJš'0×??¿?\\ÿu„îÖ.’ó&Éˆ¥¤B");
+		Entry alice_data = new Entry(1, "E1F53135E559C253", "IslEV3D1VwUnYAs/6JqlVYK7DDdzhV7b5F1VQ6Y1HJRdxVGcYIGC39ijD00myEIZMInTGTKIwExG/MvZ1Ry5yg==");
 		clients.put("Alice", alice_data);
 		try
 		{
 			ServerSocket server = new ServerSocket(PORT);
-
+			System.out.println("Authentication Server ready");
 			// ciclo infinito, in attesa di connessioni
 			while(true)
 			{
