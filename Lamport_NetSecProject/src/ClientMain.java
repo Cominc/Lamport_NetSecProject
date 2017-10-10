@@ -44,7 +44,7 @@ public class ClientMain {
 			String serverResponse = in.readLine();
 			System.out.println(RECIVE_LABEL+serverResponse+NEW_LINE);
 			
-			//Estraggo dal messaggio ricevuto n e salt (sono separati dal carattere separatore)
+			//Estrazione dal messaggio ricevuto dei parametri n e salt (sono separati dal carattere separatore)
 			if(serverResponse.contains(SEPARATOR)){
 				String salt = serverResponse.substring(serverResponse.indexOf(SEPARATOR)+1);
 				int n = Integer.parseInt(serverResponse.substring(0,serverResponse.indexOf(SEPARATOR)));
@@ -58,10 +58,6 @@ public class ClientMain {
 				//Esito autenticazione
 				serverResponse = in.readLine();
 				System.out.println(RECIVE_LABEL+serverResponse+NEW_LINE);
-				
-			}else {
-				//TODO stampa forse da rimuovere
-				System.out.println("No separator found.");
 			}
 			
 			// chiusura socket

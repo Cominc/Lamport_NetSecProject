@@ -30,15 +30,11 @@ class Connection extends Thread
 	PrintWriter out;
 	
 	HashMap<String, Entry> clients;
-	/*
-	ObjectOutputStream outObj;
-	ObjectInputStream inObj;
-	 */
+
 	public Connection(Socket client,HashMap<String, Entry> clients)
 	{
 		this.client = client;
 		this.clients = clients;
-		// invoca automaticamente il metodo run()
 		this.start();
 	}
 
@@ -49,34 +45,35 @@ class Connection extends Thread
 			System.out.println("Sto servendo il client che ha indirizzo "+client.getInetAddress());
 			
 			// inizializza i buffer in entrata e uscita per stringhe
-			
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
 
-			// eventuali elaborazioni e scambi di informazioni con il client
-			String first_mex_recived = in.readLine();
-			System.out.println(RECIVE_LABEL+first_mex_recived+NEW_LINE);
+			// Scambio messaggi con il client
+			String firstMexRecived = in.readLine();
+			System.out.println(RECIVE_LABEL+firstMexRecived+NEW_LINE);
 			
-			Entry clientToServeData = clients.get(first_mex_recived);
+			Entry clientToServeData = clients.get(firstMexRecived);
 			String firstMexSend;
-			if(clientToServeData!=null){
+			if(clientToServeData!=null) {
 				if(clientToServeData.getN()<2) {
 					System.out.println(SEND_LABEL+MEX_NEW_SETUP_NEEDED+NEW_LINE);
 					out.println(MEX_NEW_SETUP_NEEDED);
 				}else {
-					firstMexSend= clientToServeData.getN()+SEPARATOR+clientToServeData.getSalt();
+					firstMexSend = clientToServeData.getN()+SEPARATOR+clientToServeData.getSalt();
 					System.out.println(SEND_LABEL+firstMexSend+NEW_LINE);
 					out.println(firstMexSend);
 					
-					String second_mex_recived = in.readLine();
-					System.out.println(RECIVE_LABEL+second_mex_recived+NEW_LINE);
+					String secondMexRecived = in.readLine();
+					System.out.println(RECIVE_LABEL+secondMexRecived+NEW_LINE);
 					
+					
+					//TODO effettuare refactor?
 					MessageDigest md;
 					String hashN = "";
 	
 					try {
 						md = MessageDigest.getInstance(HASH_ALG_CHOOSED);
-						byte[] array = md.digest(Base64.getDecoder().decode(second_mex_recived)); 
+						byte[] array = md.digest(Base64.getDecoder().decode(secondMexRecived)); 
 						hashN = Base64.getEncoder().encodeToString(array);
 					} catch (NoSuchAlgorithmException e) {
 						// TODO Auto-generated catch block
@@ -85,8 +82,8 @@ class Connection extends Thread
 					
 					if(clientToServeData.getHash_n().equals(hashN)) {
 						clientToServeData.setN(clientToServeData.getN()-1);
-						clientToServeData.setHash_n(second_mex_recived);
-						clients.replace(first_mex_recived, clientToServeData);
+						clientToServeData.setHash_n(secondMexRecived);
+						clients.replace(firstMexRecived, clientToServeData);
 						
 						System.out.println(SEND_LABEL+MEX_AUTH_OK+NEW_LINE);
 						out.println(MEX_AUTH_OK);
