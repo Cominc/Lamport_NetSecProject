@@ -3,13 +3,13 @@ public class Entry {
 	
 	private int n;
 	private String salt;
-	private String hash_n;
+	private String hashN;
 
-	public Entry(int n, String salt, String hash_n) {
+	public Entry(int n, String salt, String hashN) {
 		super();
 		this.n = n;
 		this.salt = salt;
-		this.hash_n = hash_n;
+		this.hashN = hashN;
 	}
 	
 	public int getN() {
@@ -28,12 +28,12 @@ public class Entry {
 		this.salt = salt;
 	}
 	
-	public String getHash_n() {
-		return hash_n;
+	public String getHashN() {
+		return hashN;
 	}
 	
-	public void setHash_n(String hash_n) {
-		this.hash_n = hash_n;
+	public void setHashN(String hashN) {
+		this.hashN = hashN;
 	}
 
 }
