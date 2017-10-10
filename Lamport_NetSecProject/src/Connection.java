@@ -11,19 +11,16 @@ import java.util.HashMap;
 
 
 class Connection extends Thread {
-	
+
 	private final static String MEX_CLIENT_NOT_FOUND = "Unknown Client.";
 	private final static String MEX_AUTH_FAIL = "Authentication fail.";
 	private final static String MEX_AUTH_OK = "Authentication Success.";
 	private final static String MEX_NEW_SETUP_NEEDED = "Maximum number of authentication reached, you need a new setup.";
 	
-	// dichiarazione delle variabili socket e dei buffer
-	Socket client;
-	
-	BufferedReader in;
-	PrintWriter out;
-	
-	HashMap<String, Entry> clients;
+	private Socket client;
+	private BufferedReader in;
+	private PrintWriter out;
+	private HashMap<String, Entry> clients;
 
 	public Connection(Socket client,HashMap<String, Entry> clients)
 	{
@@ -35,9 +32,7 @@ class Connection extends Thread {
 	public void run()
 	{
 		try
-		{
-			System.out.println("Sto servendo il client che ha indirizzo "+client.getInetAddress());
-			
+		{	
 			// inizializza i buffer in entrata e uscita per stringhe
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
@@ -48,36 +43,46 @@ class Connection extends Thread {
 			
 			Entry clientToServeData = clients.get(firstMexRecived);
 			String firstMexSend;
+			// Controllo se il client che richiede di autenticarsi è registrato
 			if(clientToServeData!=null) {
+				// Controllo n per evitare l'invio della password del client in chiaro
 				if(clientToServeData.getN()<2) {
 					System.out.println(Settings.SEND_LABEL+MEX_NEW_SETUP_NEEDED+Settings.NEW_LINE);
 					out.println(MEX_NEW_SETUP_NEEDED);
 				}else {
+					// Invio la risposta al client
 					firstMexSend = clientToServeData.getN()+Settings.SEPARATOR+clientToServeData.getSalt();
 					System.out.println(Settings.SEND_LABEL+firstMexSend+Settings.NEW_LINE);
 					out.println(firstMexSend);
 					
+					// Ricevo l'hash di risposta da parte del client
 					String secondMexRecived = in.readLine();
 					System.out.println(Settings.RECIVE_LABEL+secondMexRecived+Settings.NEW_LINE);
 					
 					if(clientToServeData.getHash_n().equals(computeHash(secondMexRecived))) {
+						// Autenticazione effettuata con successo, aggiorno i dati del client sul server
 						clientToServeData.setN(clientToServeData.getN()-1);
 						clientToServeData.setHash_n(secondMexRecived);
 						clients.replace(firstMexRecived, clientToServeData);
 						
+						// Comunico l'esito positivo al client
 						System.out.println(Settings.SEND_LABEL+MEX_AUTH_OK+Settings.NEW_LINE);
 						out.println(MEX_AUTH_OK);
 					}else {
+						// Comunico l'esito negativo al client
 						System.out.println(Settings.SEND_LABEL+MEX_AUTH_FAIL+Settings.NEW_LINE);
 						out.println(MEX_AUTH_FAIL);
 					}
 				}
 			}else {
+				// Comunico al client che non è conosciuto
 				System.out.println(Settings.SEND_LABEL+MEX_CLIENT_NOT_FOUND+Settings.NEW_LINE);
 				out.println(MEX_CLIENT_NOT_FOUND);
 			}
 			
+			//TODO serve usare flush?
 			//out.flush();
+			
 			// chiusura dei buffer e del socket
 			in.close();
  			out.close();

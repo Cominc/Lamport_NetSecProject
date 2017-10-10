@@ -24,8 +24,7 @@ public class AuthenticationServerMain {
 				// chiamata bloccante, in attesa di una nuova connessione
 				Socket client = server.accept();
 
-				// la nuova richiesta viene gestita da un thread indipendente, si ripete il ciclo
-				//TODO mi può servire? Connection newConnection = new Connection(client) 
+				// la nuova richiesta viene gestita da un thread indipendente
 				//TODO controllare come si accede a clients (deve essere accesso unico, qualunque modifica deve essere vista da tutti)
 				new Connection(client,clients);
 			}
