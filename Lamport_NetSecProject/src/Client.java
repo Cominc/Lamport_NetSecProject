@@ -3,9 +3,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class Client implements Serializable{
-	private static final String HASH_ALG_CHOOSED = "SHA-512";
-	
+
+public class Client implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private String password;
@@ -35,7 +35,7 @@ public class Client implements Serializable{
 		MessageDigest md;
 		String hashN ="";
 		try {
-			md = MessageDigest.getInstance(HASH_ALG_CHOOSED);
+			md = MessageDigest.getInstance(Settings.HASH_ALG_CHOOSED);
 			byte[] array = (password+salt).getBytes();
 			for(int i=0; i< n; i++)
 				array = md.digest(array); 

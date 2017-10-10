@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 
 public class AuthenticationServerMain {
+	
+	private static final String AUTH_SERVER_START = "Authentication Server ready";
 	private final static int PORT = 31;
 	
 	public static void main(String[] args)
@@ -14,7 +16,7 @@ public class AuthenticationServerMain {
 		try
 		{
 			ServerSocket server = new ServerSocket(PORT);
-			System.out.println("Authentication Server ready");
+			System.out.println(AUTH_SERVER_START);
 			// ciclo infinito, in attesa di connessioni
 			boolean ctrl = true;
 			while(ctrl)

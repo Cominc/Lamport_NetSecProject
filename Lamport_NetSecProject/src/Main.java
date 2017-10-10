@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
+	
 	private static final String PASSWORD_ALICE = "alice_pwd";
 	
 	public static void main(String[] args) {
