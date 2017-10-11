@@ -1,12 +1,10 @@
-import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 
-public class Client implements Serializable {
+public class Client {
 
-	private static final long serialVersionUID = 1L;
 	private String name;
 	private String password;
 	
