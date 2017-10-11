@@ -51,7 +51,8 @@ class Connection extends Thread {
 					out.println(MEX_NEW_SETUP_NEEDED);
 				}else {
 					// Invio la risposta al client
-					firstMexSend = clientToServeData.getN()+Settings.SEPARATOR+clientToServeData.getSalt();
+					String saltBase64 = Base64.getEncoder().encodeToString(clientToServeData.getSalt().getBytes());
+					firstMexSend = clientToServeData.getN()+Settings.SEPARATOR+saltBase64;
 					System.out.println(Settings.SEND_LABEL+firstMexSend+Settings.NEW_LINE);
 					out.println(firstMexSend);
 					
