@@ -55,6 +55,7 @@ class Connection extends Thread {
 					firstMexSend = clientToServeData.getN()+Settings.SEPARATOR+saltBase64;
 					System.out.println(Settings.SEND_LABEL+firstMexSend+Settings.NEW_LINE);
 					out.println(firstMexSend);
+					out.flush();
 					
 					// Ricevo l'hash di risposta da parte del client
 					String secondMexRecived = in.readLine();
@@ -81,8 +82,7 @@ class Connection extends Thread {
 				out.println(MEX_CLIENT_NOT_FOUND);
 			}
 			
-			//TODO serve usare flush?
-			//out.flush();
+			out.flush();
 			
 			// chiusura dei buffer e del socket
 			in.close();
@@ -104,7 +104,6 @@ class Connection extends Thread {
 			byte[] array = md.digest(Base64.getDecoder().decode(strToHash)); 
 			hash = Base64.getEncoder().encodeToString(array);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return hash;

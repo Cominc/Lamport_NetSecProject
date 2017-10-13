@@ -39,7 +39,6 @@ public class Client {
 				array = md.digest(array); 
 			hashN = Base64.getEncoder().encodeToString(array);
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return hashN;

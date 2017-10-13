@@ -25,7 +25,6 @@ public class AuthenticationServerMain {
 				Socket client = server.accept();
 
 				// la nuova richiesta viene gestita da un thread indipendente
-				//TODO controllare come si accede a clients (deve essere accesso unico, qualunque modifica deve essere vista da tutti)
 				new Connection(client,clients);
 			}
 			server.close();
