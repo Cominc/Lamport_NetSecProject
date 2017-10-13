@@ -13,16 +13,16 @@ public class ClientMain {
 	private final static String AS_ADDRESS = "localhost";
 	private final static int PORT = 31;
 	
-	private final static String CLIENT_START = "Client ready.\n";
+	private final static String CLIENT_START = "Client ready\n";
 	
 	public static void main(String[] args) {
 		
 		// Alice cerca di autenticarsi essendo registrata sull'AS
-		Client client = new Client("Alice","alice_pwd");
+		//Client client = new Client("Alice","alice_pwd");
 		// Bob cerca di autenticarsi senza essere registrato sull'AS
 		//Client client = new Client("Bob","bob_pwd");
 		// Trudy cerca di autenticarsi come Alice ma senza conoscerne la password
-		//Client client = new Client("Alice","trudy_pwd");
+		Client client = new Client("Alice","trudy_pwd");
 		try
 		{
 			//Creazione socket 
