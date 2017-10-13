@@ -37,6 +37,7 @@ public class ClientMain {
 			
 			// Invio messaggio con la propria identità
 			out.println(client.getName());
+			out.flush();
 			System.out.println(Settings.SEND_LABEL+client.getName()+Settings.NEW_LINE);
 			
 			//Ricezione risposta dal server
@@ -52,6 +53,7 @@ public class ClientMain {
 				
 				// Invio messaggio con la risposta al server
 				out.println(hash);
+				out.flush();
 				System.out.println(Settings.SEND_LABEL+hash+Settings.NEW_LINE);
 				
 				//Esito autenticazione
